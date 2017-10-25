@@ -37,13 +37,13 @@ def execute(filters=None):
 		customer_map.get(inv.customer, {}).get("registration")]
 
 		if mode_of_payments.get(inv.name, 0):
-			row += [mode_of_payments[inv.name].get('Cash', 0), mode_of_payments[inv.name].get('Credit Card', 0)]
+			row += [mode_of_payments[inv.name].get('Cash', 0), mode_of_payments[inv.name].get('Credit Card', 0), mode_of_payments[inv.name].get('Cash', 0) + mode_of_payments[inv.name].get('Credit Card', 0)]
 		else:
-			row += [0, 0]
+			row += [0, 0, 0]
 
 
 
-		row += [inv.base_grand_total]
+		#row += [inv.base_grand_total]
 		row += [inv.discount_amount]
 		# map income values
 		base_net_total = 0

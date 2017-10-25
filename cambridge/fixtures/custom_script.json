@@ -1,0 +1,128 @@
+[
+ {
+  "docstatus": 0, 
+  "doctype": "Custom Script", 
+  "dt": "DocType", 
+  "modified": "2017-04-16 09:51:09.410191", 
+  "name": "DocType-Client", 
+  "script": "cur_frm.get_docfield(\"fields\").allow_bulk_edit = 1;", 
+  "script_type": "Client"
+ }, 
+ {
+  "docstatus": 0, 
+  "doctype": "Custom Script", 
+  "dt": "Registration", 
+  "modified": "2017-08-02 11:41:21.950377", 
+  "name": "Registration-Client", 
+  "script": "cur_frm.add_fetch(\"y21\", \"ratio\", \"pratio\");\ncur_frm.add_fetch(\"diet_plan\", \"intake\", \"calorie_intake\");\ncur_frm.add_fetch(\"residence_country\", \"phone\", \"code\");\n\n\nfrappe.ui.form.on(\"Registration\", \"onload\", function(frm){\n\n  if(frappe.session.user==\"rehab@cambridgeweightplangulf.com\"){\n  frm.set_value(\"naming_series\", \"12-REG-.#####.-.YY\");\n  }\n\n\n  });\n\n\nfrappe.ui.form.on(\"Registration\", \"h_feet\", function(frm, doctype, name) {\nfrm.doc.height = (frm.doc.h_feet * 30.48) + (frm.doc.h_inch * 2.54); \n  refresh_field(\"height\");\n});\n\nfrappe.ui.form.on(\"Registration\", \"h_inch\", function(frm, doctype, name) {\nfrm.doc.height = (frm.doc.h_feet * 30.48) + (frm.doc.h_inch * 2.54); \n  refresh_field(\"height\");\n});\n\nfrappe.ui.form.on(\"Registration\", \"weight_p\", function(frm, doctype, name) {\n  frm.doc.weight = frm.doc.weight_p * 0.453592;\n  refresh_field(\"weight\");\n});\n\n\nfrappe.ui.form.on(\"Registration\", \"weight_s\", function(frm, doctype, name) {\n  frm.doc.weight = frm.doc.weight_s * 6.350; \n  refresh_field(\"weight\");\n});\n\n", 
+  "script_type": "Client"
+ }, 
+ {
+  "docstatus": 0, 
+  "doctype": "Custom Script", 
+  "dt": "Appointments", 
+  "modified": "2017-07-09 16:57:46.674461", 
+  "name": "Appointments-Client", 
+  "script": "cur_frm.add_fetch(\"registration\", \"first_name\", \"first_name\");\ncur_frm.add_fetch(\"registration\", \"last_name\", \"last_name\");\ncur_frm.add_fetch(\"class_slot\", \"from_time\", \"time\");\ncur_frm.add_fetch(\"class_slot\", \"schedule_date\", \"schedule_date\");\n\n\ncur_frm.set_indicator_formatter('status',\n\tfunction(doc) { return (doc.status==\"Seat Confirmed\") ? \"black\":\"green\"});\n\n", 
+  "script_type": "Client"
+ }, 
+ {
+  "docstatus": 0, 
+  "doctype": "Custom Script", 
+  "dt": "Customer", 
+  "modified": "2017-05-28 13:42:40.825312", 
+  "name": "Customer-Client", 
+  "script": "frappe.ui.form.on(\"Customer\", \"validate\", function(frm) {\n    frm.doc.google_link = \"http://www.google.com/maps/place/\" + frm.doc.lat + \",\" + frm.doc.log;\n});\n\n\n\n\n", 
+  "script_type": "Client"
+ }, 
+ {
+  "docstatus": 0, 
+  "doctype": "Custom Script", 
+  "dt": "Class Schedule", 
+  "modified": "2017-04-16 12:52:23.290534", 
+  "name": "Class Schedule-Client", 
+  "script": "cur_frm.add_fetch(\"session_type\", \"max_occupancy\", \"max_occupany\");\ncur_frm.add_fetch(\"session_type\", \"max_occupancy\", \"occupany\");\n\n", 
+  "script_type": "Client"
+ }, 
+ {
+  "docstatus": 0, 
+  "doctype": "Custom Script", 
+  "dt": "Report", 
+  "modified": "2017-04-20 12:04:09.673483", 
+  "name": "Report-Client", 
+  "script": "frappe.ui.form.on(\"Report\", {\n  refresh: function(frm) {\n    frm.add_custom_button(__('Open'), function() { \n        // click\n      }, __('Show'));\n  }\n}", 
+  "script_type": "Client"
+ }, 
+ {
+  "docstatus": 0, 
+  "doctype": "Custom Script", 
+  "dt": "Send Sms", 
+  "modified": "2017-04-24 11:38:04.014950", 
+  "name": "Send Sms-Client", 
+  "script": "cur_frm.add_fetch(\"sms_template\", \"sms_content\", \"english_message\");\ncur_frm.add_fetch(\"sms_template\", \"arabic_content\", \"arabic_message\");", 
+  "script_type": "Client"
+ }, 
+ {
+  "docstatus": 0, 
+  "doctype": "Custom Script", 
+  "dt": "Purchase Receipt", 
+  "modified": "2017-05-21 11:21:32.786148", 
+  "name": "Purchase Receipt-Client", 
+  "script": "cur_frm.add_fetch(\"item_code\", \"case_qty\", \"case_qty\");\ncur_frm.add_fetch(\"item_code\", \"box_qty\", \"box_qty\");\ncur_frm.add_fetch(\"item_code\", \"durtn_mfg_exp\", \"durtn_mfg_exp\");\ncur_frm.add_fetch(\"item_code\", \"net_weight\", \"net_weight\");\n\nfrappe.ui.form.on(\"Purchase Receipt Item\", \"qty\", function(frm, cdt, cdn) {\n    frm.doc.total_cases = 0;\n    var item = locals[cdt][cdn];\n    var total_pcs = 0;\n    var net_weight = 0;\n    var total_cases = 0;\n    var c_factor = 0;\n    $.each(frm.doc[\"items\"] || [], function(i, item) {\n    if(item.uom == \"Case\"){\n    total_cases += item.qty;\n    }\n    if(item.uom == \"Nos\"){\n    var c_factor = 0;\n    frappe.call({\n    method: \"erpnext.stock.get_item_details.get_conversion_factor\",\n    args: {\n    item_code: item.item_code,\n    uom: \"Case\"\n    },\n    callback: function(r) {\n    c_factor += (item.qty / r.message.conversion_factor);\n    frm.doc.total_cases += c_factor\n    console.log(c_factor);\n     }\n    });\n    }\n\n    total_pcs += (item.conversion_factor * item.qty);\n    net_weight += (item.net_weight * item.qty);\n\n    });\n    total_cases += c_factor;\n    console.log(total_cases);\n    frm.doc.total_pcs = total_pcs;\n    frm.doc.total_net_weight = net_weight;\n    frm.doc.total_cases += total_cases;\n    frm.refresh_field(\"total_pcs\");\n    frm.refresh_field(\"total_net_weight\");\n    frm.refresh_field(\"total_cases\");\n});\n\nfrappe.ui.form.on(\"Purchase Receipt Item\", \"uom\", function(frm, cdt, cdn) {\n    var item = locals[cdt][cdn];\n    var total_pcs = 0;\n    var net_weight = 0;\n    var total_cases = 0;\n\n    $.each(frm.doc[\"items\"] || [], function(i, item) {\n    if(item.uom == \"Case\"){\n    total_cases += item.qty;\n    }\n    if(item.uom == \"Nos\"){\n    var c_factor = 0;\n    frappe.call({\n    method: \"erpnext.stock.get_item_details.get_conversion_factor\",\n    args: {\n    item_code: item.item_code,\n    uom: \"Case\"\n    },\n    callback: function(r) {\n    c_factor += (item.qty / r.message.conversion_factor);\n    frm.doc.total_cases += c_factor\n\n     }\n    });\n    }\n    total_pcs += (item.conversion_factor * item.qty);\n    net_weight += (item.net_weight * item.qty);\n\n    });\n    frm.doc.total_pcs = total_pcs;\n    frm.doc.total_net_weight = net_weight;\n    frm.doc.total_cases = total_cases;\n    frm.refresh_field(\"total_pcs\");\n    frm.refresh_field(\"total_net_weight\");\n    frm.refresh_field(\"total_cases\");\n});\n", 
+  "script_type": "Client"
+ }, 
+ {
+  "docstatus": 0, 
+  "doctype": "Custom Script", 
+  "dt": "Purchase Invoice", 
+  "modified": "2017-09-20 13:52:26.433445", 
+  "name": "Purchase Invoice-Client", 
+  "script": "cur_frm.add_fetch(\"item_code\", \"case_qty\", \"case_qty\");\ncur_frm.add_fetch(\"item_code\", \"box_qty\", \"box_qty\");\ncur_frm.add_fetch(\"item_code\", \"durtn_mfg_exp\", \"durtn_mfg_exp\");\ncur_frm.add_fetch(\"item_code\", \"net_weight\", \"net_weight\");\n\nfrappe.ui.form.on(\"Purchase Invoice Item\", \"qty\", function(frm, cdt, cdn) {\n    frm.doc.total_cases = 0;\n    var item = locals[cdt][cdn];\n    var total_pcs = 0;\n    var net_weight = 0;\n    var total_cases = 0;\n    var c_factor = 0;\n    $.each(frm.doc[\"items\"] || [], function(i, item) {\n    if(item.uom == \"Case\"){\n    total_cases += item.qty;\n    }\n    if(item.uom == \"Nos\"){\n    var c_factor = 0;\n    frappe.call({\n    method: \"erpnext.stock.get_item_details.get_conversion_factor\",\n    args: {\n    item_code: item.item_code,\n    uom: \"Case\"\n    },\n    callback: function(r) {\n    c_factor += (item.qty / r.message.conversion_factor);\n    frm.doc.total_cases += c_factor\n    console.log(c_factor);\n     }\n    });\n    }\n\n    total_pcs += (item.conversion_factor * item.qty);\n    net_weight += (item.net_weight * item.qty);\n\n    });\n    total_cases += c_factor;\n    console.log(total_cases);\n    frm.doc.total_pcs = total_pcs;\n    frm.doc.total_net_weight = net_weight;\n    frm.doc.total_cases += total_cases;\n    frm.refresh_field(\"total_pcs\");\n    frm.refresh_field(\"total_net_weight\");\n    frm.refresh_field(\"total_cases\");\n});\n\nfrappe.ui.form.on(\"Purchase Invoice Item\", \"uom\", function(frm, cdt, cdn) {\n    var item = locals[cdt][cdn];\n    var total_pcs = 0;\n    var net_weight = 0;\n    var total_cases = 0;\n\n    $.each(frm.doc[\"items\"] || [], function(i, item) {\n    if(item.uom == \"Case\"){\n    total_cases += item.qty;\n    }\n    if(item.uom == \"Nos\"){\n    var c_factor = 0;\n    frappe.call({\n    method: \"erpnext.stock.get_item_details.get_conversion_factor\",\n    args: {\n    item_code: item.item_code,\n    uom: \"Case\"\n    },\n    callback: function(r) {\n    c_factor += (item.qty / r.message.conversion_factor);\n    frm.doc.total_cases += c_factor\n\n     }\n    });\n    }\n    total_pcs += (item.conversion_factor * item.qty);\n    net_weight += (item.net_weight * item.qty);\n\n    });\n    frm.doc.total_pcs = total_pcs;\n    frm.doc.total_net_weight = net_weight;\n    frm.doc.total_cases = total_cases;\n    frm.refresh_field(\"total_pcs\");\n    frm.refresh_field(\"total_net_weight\");\n    frm.refresh_field(\"total_cases\");\n});\n", 
+  "script_type": "Client"
+ }, 
+ {
+  "docstatus": 0, 
+  "doctype": "Custom Script", 
+  "dt": "Stock Entry", 
+  "modified": "2017-05-27 11:49:49.806785", 
+  "name": "Stock Entry-Client", 
+  "script": "cur_frm.add_fetch(\"item_code\", \"case_qty\", \"case_qty\");\ncur_frm.add_fetch(\"item_code\", \"box_qty\", \"box_qty\");\ncur_frm.add_fetch(\"item_code\", \"durtn_mfg_exp\", \"durtn_mfg_exp\");\ncur_frm.add_fetch(\"item_code\", \"net_weight\", \"net_weight\");\n\nfrappe.ui.form.on(\"Stock Entry Detail\", \"qty\", function(frm, cdt, cdn) {\n    frm.doc.total_cases = 0;\n    var item = locals[cdt][cdn];\n    var total_pcs = 0;\n    var net_weight = 0;\n    var total_cases = 0;\n    var c_factor = 0;\n    $.each(frm.doc[\"items\"] || [], function(i, item) {\n    if(item.uom == \"Case\"){\n    total_cases += item.qty;\n    }\n    if(item.uom == \"Nos\"){\n    var c_factor = 0;\n    frappe.call({\n    method: \"erpnext.stock.get_item_details.get_conversion_factor\",\n    args: {\n    item_code: item.item_code,\n    uom: \"Case\"\n    },\n    callback: function(r) {\n    c_factor += (item.qty / r.message.conversion_factor);\n    frm.doc.total_cases += c_factor\n    console.log(c_factor);\n     }\n    });\n    }\n\n    total_pcs += (item.conversion_factor * item.qty);\n    net_weight += (item.net_weight * item.qty);\n\n    });\n    total_cases += c_factor;\n    console.log(total_cases);\n    frm.doc.total_pcs = total_pcs;\n    frm.doc.total_net_weight = net_weight;\n    frm.doc.total_cases += total_cases;\n    frm.refresh_field(\"total_pcs\");\n    frm.refresh_field(\"total_net_weight\");\n    frm.refresh_field(\"total_cases\");\n});\n\nfrappe.ui.form.on(\"Stock Entry Detail\", \"uom\", function(frm, cdt, cdn) {\n    var item = locals[cdt][cdn];\n    var total_pcs = 0;\n    var net_weight = 0;\n    var total_cases = 0;\n\n    $.each(frm.doc[\"items\"] || [], function(i, item) {\n    if(item.uom == \"Case\"){\n    total_cases += item.qty;\n    }\n    if(item.uom == \"Nos\"){\n    var c_factor = 0;\n    frappe.call({\n    method: \"erpnext.stock.get_item_details.get_conversion_factor\",\n    args: {\n    item_code: item.item_code,\n    uom: \"Case\"\n    },\n    callback: function(r) {\n    c_factor += (item.qty / r.message.conversion_factor);\n    frm.doc.total_cases += c_factor\n\n     }\n    });\n    }\n    total_pcs += (item.conversion_factor * item.qty);\n    net_weight += (item.net_weight * item.qty);\n\n    });\n    frm.doc.total_pcs = total_pcs;\n    frm.doc.total_net_weight = net_weight;\n    frm.doc.total_cases = total_cases;\n    frm.refresh_field(\"total_pcs\");\n    frm.refresh_field(\"total_net_weight\");\n    frm.refresh_field(\"total_cases\");\n});\n", 
+  "script_type": "Client"
+ }, 
+ {
+  "docstatus": 0, 
+  "doctype": "Custom Script", 
+  "dt": "Follow up", 
+  "modified": "2017-08-20 14:04:56.815276", 
+  "name": "Follow up-Client", 
+  "script": "cur_frm.add_fetch(\"registration\", \"customer\", \"customer\");\ncur_frm.add_fetch(\"registration\", \"height\", \"height\");\ncur_frm.add_fetch(\"registration\", \"diet_plan\", \"diet_plan\");\ncur_frm.add_fetch(\"registration\", \"y21\", \"physical_activity\");", 
+  "script_type": "Client"
+ }, 
+ {
+  "docstatus": 0, 
+  "doctype": "Custom Script", 
+  "dt": "Sales Invoice", 
+  "modified": "2017-10-10 15:04:54.099413", 
+  "name": "Sales Invoice-Client", 
+  "script": "cur_frm.add_fetch(\"item_code\", \"case_qty\", \"case_qty\");\ncur_frm.add_fetch(\"item_code\", \"box_qty\", \"box_qty\");\ncur_frm.add_fetch(\"item_code\", \"durtn_mfg_exp\", \"durtn_mfg_exp\");\ncur_frm.add_fetch(\"item_code\", \"net_weight\", \"net_weight\");\ncur_frm.add_fetch(\"registration\", \"customer\", \"customer\");\ncur_frm.add_fetch(\"batch_no\", \"batch_price\", \"batch_price\");\ncur_frm.add_fetch(\"batch_no\", \"expiry_date\", \"expiry_date\");\n\nfrappe.ui.form.on(\"Sales Invoice\", \"onload\", function(frm){\n\n  if(frappe.session.user==\"rehab@cambridgeweightplangulf.com\"){\n  cur_frm.set_value(\"naming_series\", \"A-.######\");\n  }\n\n\n  });\n\n\n\n\n\n// Total Quantity Calculation\nfrappe.ui.form.on(\"Sales Invoice\", \"validate\", function(frm, cdt, cdn) {\n\ttotal_qty = 0;\n\t$.each(frm.doc.items, function(i, d) {\n        if(d.item_group!=\"Services\"){\n\ttotal_qty += d.qty;\n\t}\n\t});\n        frm.doc.total_pcs = total_qty;\n\n        \n\n});\n\n\nfrappe.ui.form.on(\"Sales Invoice Item\", \"qty\", function(frm, cdt, cdn) {\n    frm.doc.total_cases = 0;\n    var item = locals[cdt][cdn];\n    var total_pcs = 0;\n    var net_weight = 0;\n    var total_cases = 0;\n    var c_factor = 0;\n    $.each(frm.doc[\"items\"] || [], function(i, item) {\n    if(item.uom == \"Case\"){\n    total_cases += item.qty;\n    }\n    if(item.uom == \"Nos\"){\n    var c_factor = 0;\n    frappe.call({\n    method: \"erpnext.stock.get_item_details.get_conversion_factor\",\n    args: {\n    item_code: item.item_code,\n    uom: \"Case\"\n    },\n    callback: function(r) {\n    c_factor += (item.qty / r.message.conversion_factor);\n    frm.doc.total_cases += c_factor\n    console.log(c_factor);\n     }\n    });\n    }\n\n    total_pcs += (item.conversion_factor * item.qty);\n    net_weight += (item.net_weight * item.qty);\n\n    });\n    total_cases += c_factor;\n    console.log(total_cases);\n    frm.doc.total_pcs = total_pcs;\n    frm.doc.total_net_weight = net_weight;\n    frm.doc.total_cases += total_cases;\n    frm.refresh_field(\"total_pcs\");\n    frm.refresh_field(\"total_net_weight\");\n    frm.refresh_field(\"total_cases\");\n});\n\nfrappe.ui.form.on(\"Sales Invoice Item\", \"uom\", function(frm, cdt, cdn) {\n    var item = locals[cdt][cdn];\n    var total_pcs = 0;\n    var net_weight = 0;\n    var total_cases = 0;\n\n    $.each(frm.doc[\"items\"] || [], function(i, item) {\n    if(item.uom == \"Case\"){\n    total_cases += item.qty;\n    }\n    if(item.uom == \"Nos\"){\n    var c_factor = 0;\n    frappe.call({\n    method: \"erpnext.stock.get_item_details.get_conversion_factor\",\n    args: {\n    item_code: item.item_code,\n    uom: \"Case\"\n    },\n    callback: function(r) {\n    c_factor += (item.qty / r.message.conversion_factor);\n    frm.doc.total_cases += c_factor\n\n     }\n    });\n    }\n    total_pcs += (item.conversion_factor * item.qty);\n    net_weight += (item.net_weight * item.qty);\n\n    });\n    frm.doc.total_pcs = total_pcs;\n    frm.doc.total_net_weight = net_weight;\n    frm.doc.total_cases = total_cases;\n    frm.refresh_field(\"total_pcs\");\n    frm.refresh_field(\"total_net_weight\");\n    frm.refresh_field(\"total_cases\");\n});\n\nfrappe.ui.form.on(\"Sales Invoice\", \"pos_item\", function(frm, cdt, cdn) { \n\nvar added = false;\n\n\t\t// find row with item if exists\n\t\t$.each(frm.doc[\"items\"] || [], function(i, d) {\n\t\t\tif(d.item_code===frm.doc.pos_item) {\n\t\t\t\tfrappe.model.set_value(d.doctype, d.name, 'qty', d.qty + 1);\n\t\t\t\tadded = true;\n\t\t\t\treturn false;\n\t\t\t}\n\t\t});\n\n\t\tif(!added) {\n\t\t\tvar d = frm.fields_dict.items.grid.add_new_row();\n\t\t\tfrappe.model.set_value(d.doctype, d.name, 'item_code', frm.doc.pos_item);\n\n\t\t\t// after item fetch\n\t\t\tfrappe.after_ajax(function() {\n\t\t\t\tsetTimeout(function() {\n\t\t\t\t\tfrappe.model.set_value(d.doctype, d.name, 'qty', 1);\n\t\t\t\t\t\n\t\t\t\t}, 100);\n\t\t\t});\n\t\t}\n         frm.doc.pos_item=\"\";\n         frm.refresh_field(\"items\");\n\n});\n\n\nfrappe.ui.form.on(\"Sales Invoice Item\", \"batch_no\", function(frm, cdt, cdn) {\nfrappe.call({\n    'method': 'frappe.client.get_value',\n    'args': {\n        'doctype': 'Batch Price',\n        'fieldname': 'price',\n          'filters': {\n            'batch': locals[cdt][cdn]['batch_no'],\n            'customer_group': frm.doc.customer_group\n          }\n        }\n        ,\n       callback: function(r){\n              console.log(r.message.price);\n              if(r.message.price){ \n              locals[cdt][cdn]['rate'] = r.message.price;\n\t\t}\n       }\n    \n});\n});\n", 
+  "script_type": "Client"
+ }, 
+ {
+  "docstatus": 0, 
+  "doctype": "Custom Script", 
+  "dt": "Batch", 
+  "modified": "2017-08-03 10:11:49.707809", 
+  "name": "Batch-Client", 
+  "script": "cur_frm.add_fetch(\"item\", \"durtn_mfg_exp\", \"mfg_days\");\n\nfrappe.ui.form.on(\"Batch\", \"validate\", function(frm) {\n    frm.doc.batch_id = frm.doc.item + \"-\" + moment(frm.doc.expiry_date).format('DD-MM-YYYY');\n    if(frm.doc.manufacturing_date != frappe.datetime.add_days(frm.doc.expiry_date, -frm.doc.mfg_days));\n\tmsgprint(\"Your Manufacturing Date and Expiry Date dont fit. Expiry should be :\" + moment(frappe.datetime.add_days(frm.doc.manufacturing_date, frm.doc.mfg_days)).format('DD-MM-YYYY'));\n\t\t\n});", 
+  "script_type": "Client"
+ }, 
+ {
+  "docstatus": 0, 
+  "doctype": "Custom Script", 
+  "dt": "Delivery Note", 
+  "modified": "2017-10-21 13:59:54.541553", 
+  "name": "Delivery Note-Client", 
+  "script": "cur_frm.add_fetch(\"item_code\", \"case_qty\", \"case_qty\");\ncur_frm.add_fetch(\"item_code\", \"box_qty\", \"box_qty\");\ncur_frm.add_fetch(\"item_code\", \"durtn_mfg_exp\", \"durtn_mfg_exp\");\ncur_frm.add_fetch(\"item_code\", \"net_weight\", \"net_weight\");\n\nfrappe.ui.form.on(\"Delivery Note Item\", \"qty\", function(frm, cdt, cdn) {\n    frm.doc.total_cases = 0;\n    var item = locals[cdt][cdn];\n    var total_pcs = 0;\n    var net_weight = 0;\n    var total_cases = 0;\n    var c_factor = 0;\n    $.each(frm.doc[\"items\"] || [], function(i, item) {\n    if(item.uom == \"Case\"){\n    total_cases += item.qty;\n    }\n    if(item.uom == \"Nos\"){\n    var c_factor = 0;\n    frappe.call({\n    method: \"erpnext.stock.get_item_details.get_conversion_factor\",\n    args: {\n    item_code: item.item_code,\n    uom: \"Case\"\n    },\n    callback: function(r) {\n    c_factor += (item.qty / r.message.conversion_factor);\n    frm.doc.total_cases += c_factor\n    console.log(c_factor);\n     }\n    });\n    }\n\n    total_pcs += (item.conversion_factor * item.qty);\n    net_weight += (item.net_weight * item.qty);\n\n    });\n    total_cases += c_factor;\n    console.log(total_cases);\n    frm.doc.total_pcs = total_pcs;\n    frm.doc.total_net_weight = net_weight;\n    frm.doc.total_cases += total_cases;\n    frm.refresh_field(\"total_pcs\");\n    frm.refresh_field(\"total_net_weight\");\n    frm.refresh_field(\"total_cases\");\n});\n\nfrappe.ui.form.on(\"Delivery Note Item\", \"uom\", function(frm, cdt, cdn) {\n    var item = locals[cdt][cdn];\n    var total_pcs = 0;\n    var net_weight = 0;\n    var total_cases = 0;\n\n    $.each(frm.doc[\"items\"] || [], function(i, item) {\n    if(item.uom == \"Case\"){\n    total_cases += item.qty;\n    }\n    if(item.uom == \"Nos\"){\n    var c_factor = 0;\n    frappe.call({\n    method: \"erpnext.stock.get_item_details.get_conversion_factor\",\n    args: {\n    item_code: item.item_code,\n    uom: \"Case\"\n    },\n    callback: function(r) {\n    c_factor += (item.qty / r.message.conversion_factor);\n    frm.doc.total_cases += c_factor\n\n     }\n    });\n    }\n    total_pcs += (item.conversion_factor * item.qty);\n    net_weight += (item.net_weight * item.qty);\n\n    });\n    frm.doc.total_pcs = total_pcs;\n    frm.doc.total_net_weight = net_weight;\n    frm.doc.total_cases = total_cases;\n    frm.refresh_field(\"total_pcs\");\n    frm.refresh_field(\"total_net_weight\");\n    frm.refresh_field(\"total_cases\");\n});\n", 
+  "script_type": "Client"
+ }
+]

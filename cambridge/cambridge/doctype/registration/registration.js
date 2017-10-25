@@ -5,10 +5,8 @@
 
 
 frappe.ui.form.on('Registration', {
-	refresh: function(frm) {
-
-
- //Make System based on status
+	refresh: function(frm) { 
+ 	//Make System based on status
  if(frm.doc.status=="Process Payment"){
 	 cur_frm.set_df_property("height", "reqd", 1);
 	 cur_frm.set_df_property("weight", "reqd", 1);
@@ -105,11 +103,21 @@ frappe.ui.form.on("Registration", "validate", function(frm) {
 
 
     if (frm.doc.no_children < frm.doc.overweight_children) {
-        msgprint("Overweight Children should is more than No of Children, PLease check");
+        frappe.msgprint("Overweight Children should is more than No of Children, PLease check");
         validated = false;
     }
-
-     frm.doc.customer_name = frm.doc.first_name + " " + frm.doc.middle_name + " " + frm.doc.last_name
+    if (frm.doc.middle_name && frm.doc.last_name){
+    	frm.doc.customer_name = frm.doc.first_name + " " + frm.doc.middle_name + " " + frm.doc.last_name
+    }
+    else if (!frm.doc.middle_name && !frm.doc.last_name){    	
+    	frm.doc.customer_name = frm.doc.first_name 
+    }
+    else if (!frm.doc.last_name && frm.doc.middle_name ){    	
+    	frm.doc.customer_name = frm.doc.first_name + " " + frm.doc.middle_name
+    }
+    else if (!frm.doc.middle_name && frm.doc.last_name){    	
+    	frm.doc.customer_name = frm.doc.first_name + " " + frm.doc.last_name
+    }
 });
 
 
@@ -214,7 +222,7 @@ frappe.ui.form.on("Registration", "telephone_no", function(frm, doctype, name) {
 
 
 			                console.log(html_str);
-			                msgprint(html_str);
+			                frappe.msgprint(html_str);
 										}
 			          }
 
@@ -250,7 +258,7 @@ frappe.ui.form.on("Registration", "telephone_no", function(frm, doctype, name) {
 
 
 						                console.log(html_str);
-						                msgprint(html_str);
+						                frappe.msgprint(html_str);
 													}
 						          }
 

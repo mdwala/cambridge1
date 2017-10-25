@@ -9,7 +9,7 @@ from frappe import _
 from frappe.model.document import Document
 from frappe.model.mapper import get_mapped_doc
 from frappe.utils import getdate, validate_email_add, today, add_years
-from erpnext.setup.doctype.sms_settings.sms_settings import send_sms
+from frappe.core.doctype.sms_settings.sms_settings import send_sms
 from frappe.utils import flt, get_datetime, format_datetime
 
 class Registration(Document):
@@ -68,7 +68,8 @@ def make_customer(frm):
 		cust = frappe.new_doc("Customer")
 		cust.first_name = ref.first_name
 		cust.last_name = ref.last_name
-		cust.customer_name = str(ref.first_name) + ' ' + str(ref.last_name)
+		#cust.customer_name = str(ref.first_name) + ' ' + str(ref.last_name)
+		cust.customer_name = str(ref.customer_name)
 		cust.customer_group = "Individual"
 		cust.customer_type = "Individual"
 		cust.territory = ref.emirates
@@ -84,7 +85,8 @@ def make_customer(frm):
 	test = frappe.new_doc("Customer")
 	test.first_name = reg.first_name
 	test.last_name = reg.last_name
-	test.customer_name = str(reg.first_name) + ' ' + str(reg.last_name)
+	#test.customer_name = str(reg.first_name) + ' ' + str(reg.last_name)
+	test.customer_name = str(reg.customer_name)
 	test.customer_group = "Individual"
 	test.customer_type = "Individual"
 	test.territory = reg.emirates

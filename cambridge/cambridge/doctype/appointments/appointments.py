@@ -7,7 +7,7 @@ import frappe
 import datetime
 from frappe.model.document import Document
 from frappe.utils import flt, get_datetime, format_datetime
-from erpnext.setup.doctype.sms_settings.sms_settings import send_sms
+from frappe.core.doctype.sms_settings.sms_settings import send_sms
 
 class Appointments(Document):
 	def validate(self):
