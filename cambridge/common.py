@@ -14,6 +14,8 @@ from erpnext.manufacturing.doctype.manufacturing_settings.manufacturing_settings
 from erpnext.stock.stock_balance import get_planned_qty, update_bin_qty
 from erpnext.manufacturing.doctype.bom.bom import get_bom_items_as_dict
 from erpnext.stock.utils import get_bin
+from frappe import msgprint, _
+from frappe.model.naming import make_autoname
 
 
 
@@ -88,3 +90,11 @@ def reserve_quote_items(quote, method):
 		})
 	transfer.save()
 	transfer.submit()
+
+def customer_autoname(self, method):
+	if self.registration:
+		self.name = self.get_customer_name()
+	else:
+		if not self.naming_series:
+			frappe.throw(_("Series is mandatory"), frappe.MandatoryError)
+		self.name = make_autoname(self.naming_series+'.#####')

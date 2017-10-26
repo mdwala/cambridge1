@@ -30,9 +30,9 @@
   "docstatus": 0, 
   "doctype": "Custom Script", 
   "dt": "Customer", 
-  "modified": "2017-05-28 13:42:40.825312", 
+  "modified": "2017-10-26 20:28:09.671933", 
   "name": "Customer-Client", 
-  "script": "frappe.ui.form.on(\"Customer\", \"validate\", function(frm) {\n    frm.doc.google_link = \"http://www.google.com/maps/place/\" + frm.doc.lat + \",\" + frm.doc.log;\n});\n\n\n\n\n", 
+  "script": "cur_frm.add_fetch(\"registration\", \"customer_name\", \"customer_name\");\ncur_frm.add_fetch(\"registration\", \"sex\", \"gender\");\ncur_frm.add_fetch(\"registration\", \"y21\", \"physical_activity\");\n\nfrappe.ui.form.on(\"Customer\", {\n    validate: function(frm) {\n      frm.doc.google_link = \"http://www.google.com/maps/place/\" + frm.doc.lat + \",\" + frm.doc.log;\n\n      if (frm.doc.middle_name && frm.doc.last_name){\n        frm.doc.customer_name = frm.doc.first_name + \" \" + frm.doc.middle_name + \" \" + frm.doc.last_name\n      }\n      else if (!frm.doc.middle_name && !frm.doc.last_name){     \n        frm.doc.customer_name = frm.doc.first_name \n      }\n      else if (!frm.doc.last_name && frm.doc.middle_name ){     \n        frm.doc.customer_name = frm.doc.first_name + \" \" + frm.doc.middle_name\n      }\n      else if (!frm.doc.middle_name && frm.doc.last_name){      \n        frm.doc.customer_name = frm.doc.first_name + \" \" + frm.doc.last_name\n     }\n    \n    }, \n\n    refresh:function(frm){\n      erpnext.toggle_naming_series();    \n    },\n    registration:function(frm) {\n      if(frm.doc.registration){\n          frm.doc.customer_type =\"Individual\";\n          frm.toggle_display(\"naming_series\", false);\n      }\n      else{\n        frm.doc.customer_type =\"Company\";\n        erpnext.toggle_naming_series();\n        frm.doc.first_name = null; \n        frm.doc.middle_name = null;  \n        frm.doc.last_name = null;\n        frm.doc.customer_name = null;\n        frm.doc.telephone_no = null;\n        frm.doc.y21 = null;\n      } \n\n      refresh_field(\"customer_type\");\n      refresh_field(\"middle_name\");\n      refresh_field(\"last_name\");\n      refresh_field(\"customer_name\");\n      refresh_field(\"first_name\");\n      refresh_field(\"telephone_no\");\n      refresh_field(\"y21\");\n   },\n\n });", 
   "script_type": "Client"
  }, 
  {

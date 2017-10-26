@@ -11,9 +11,8 @@ app_color = "grey"
 app_email = "kmanoj@makwiz.com"
 app_license = "MIT"
 
-
-
-fixtures = ["Custom Field"]
+required_apps = ["erpnext"]
+fixtures = ["Custom Field", "Custom Script", "Print Format","Property Setter"]
 # Includes in <head>
 # ------------------
 
@@ -89,7 +88,8 @@ doc_events ={
         "on_submit": "cambridge.common.reserve_quote_items"
     },
     "Customer":{
-        "after_insert": "cambridge.common.change_registration_status"
+        "after_insert": "cambridge.common.change_registration_status",
+        "before_save": "cambridge.common.customer_autoname"
     }
   }
 # doc_events = {
