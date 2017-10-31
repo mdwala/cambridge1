@@ -88,8 +88,7 @@ doc_events ={
         "on_submit": "cambridge.common.reserve_quote_items"
     },
     "Customer":{
-        "after_insert": "cambridge.common.change_registration_status",
-        "before_save": "cambridge.common.customer_autoname"
+        "after_insert": "cambridge.common.change_registration_status"        
     }
   }
 # doc_events = {

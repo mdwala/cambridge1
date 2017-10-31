@@ -3414,7 +3414,7 @@
   "print_width": null, 
   "read_only": 0, 
   "report_hide": 0, 
-  "reqd": 1, 
+  "reqd": 0, 
   "search_index": 0, 
   "unique": 0, 
   "width": null
@@ -3490,7 +3490,7 @@
   "print_width": null, 
   "read_only": 0, 
   "report_hide": 0, 
-  "reqd": 0, 
+  "reqd": 1, 
   "search_index": 0, 
   "unique": 0, 
   "width": null

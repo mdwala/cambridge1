@@ -90,11 +90,3 @@ def reserve_quote_items(quote, method):
 		})
 	transfer.save()
 	transfer.submit()
-
-def customer_autoname(self, method):
-	if self.registration:
-		self.name = self.get_customer_name()
-	else:
-		if not self.naming_series:
-			frappe.throw(_("Series is mandatory"), frappe.MandatoryError)
-		self.name = make_autoname(self.naming_series+'.#####')
