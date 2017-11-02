@@ -17,6 +17,7 @@ frappe.ui.form.on('Registration', {
 	 cur_frm.set_df_property("occupation", "reqd", 1);
 	 cur_frm.set_df_property("exercise", "reqd", 1);
 	 cur_frm.set_df_property("diet_plan", "reqd", 1);
+	 cur_frm.set_df_property("start_date", "reqd", 1);
 	 cur_frm.set_df_property("aim", "reqd", 1);
  }
 
