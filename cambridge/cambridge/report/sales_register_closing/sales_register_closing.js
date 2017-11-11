@@ -15,10 +15,10 @@ frappe.query_reports["Sales Register Closing"] = {
 			"width": "80"
 		},
 		{
-			"fieldname":"branch",
-			"label": __("Branch"),
+			"fieldname":"territory",
+			"label": __("Territory"),
 			"fieldtype": "Link",
-			"options": "Branch"
+			"options": "Territory"
 		},
 		{
 			"fieldname":"user",

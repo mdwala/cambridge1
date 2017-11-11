@@ -13,8 +13,7 @@ frappe.ui.form.on("Appointments", "onload", function(frm){
 		return {
 			"filters": [
 				["schedule_date", ">=", frm.doc.date],
-        ["occupancy", ">", 0]
-
+        		["occupancy", ">", 0]
 			]
 		}
 	});

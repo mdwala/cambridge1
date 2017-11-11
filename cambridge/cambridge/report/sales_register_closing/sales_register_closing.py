@@ -75,8 +75,7 @@ def get_columns(invoice_list):
 	columns = [
 		_("Invoice") + ":Link/Sales Invoice:120", _("Posting Date") + ":Date:80",
 		_("Customer Name") + "::120",
-		_("Registration") + ":Link/Registration:120",
-
+		_("Registration") + ":Link/Registration:120"
 	]
 
 	income_accounts = payment_accounts = income_columns = pay_columns = []
@@ -106,7 +105,7 @@ def get_conditions(filters):
 	if filters.get("company"): conditions += " and company=%(company)s"
 	if filters.get("customer"): conditions += " and customer = %(customer)s"
 	if filters.get("user"): conditions += " and owner = %(user)s"
-	if filters.get("branch"): conditions += " and branch = %(branch)s"
+	if filters.get("territory"): conditions += " and territory = %(territory)s"
 
 	if filters.get("from_date"): conditions += " and posting_date >= %(from_date)s"
 	if filters.get("to_date"): conditions += " and posting_date <= %(to_date)s"
