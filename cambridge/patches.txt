@@ -1,7 +1,0 @@
-execute:import unidecode
-cambridge.patches.v9_1_0_6.remove_custom_Field
-cambridge.patches.v9_1_0_6.copy_branch_to_territory_appointments
-cambridge.patches.v9_1_0_6.copy_branch_to_territory_follow_up
-cambridge.patches.v9_1_0_6.copy_branch_to_territory_sales_invoice
-cambridge.patches.v9_1_0_6.copy_branch_to_territory_registration
-cambridge.patches.v9_1_0_6.fix_179
